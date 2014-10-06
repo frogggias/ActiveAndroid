@@ -118,14 +118,6 @@ public final class SQLiteUtils {
         return number;
 	}
 
-    public static double doubleQuery(final String sql, final String[] selectionArgs) {
-        final Cursor cursor = Cache.openDatabase().rawQuery(sql, selectionArgs);
-        final double number = processDoubleCursor(cursor);
-        cursor.close();
-
-        return number;
-    }
-
 	public static <T extends Model> T rawQuerySingle(Class<? extends Model> type, String sql, String[] selectionArgs) {
 		List<T> entities = rawQuery(type, sql, selectionArgs);
 
@@ -377,13 +369,6 @@ public final class SQLiteUtils {
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
 	    }
-        return 0;
-    }
-
-    private static double processDoubleCursor(final Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            return cursor.getDouble(0);
-        }
         return 0;
     }
 
