@@ -293,6 +293,21 @@ public final class From implements Sqlable {
         return sqlString(sql);
     }
 
+    public String toSumSql(String column) {
+        final StringBuilder sql = new StringBuilder();
+        sql.append("SELECT SUM(" + column + ") ");
+
+        addFrom(sql);
+        addJoins(sql);
+        addWhere(sql);
+        addGroupBy(sql);
+        addHaving(sql);
+        addLimit(sql);
+        addOffset(sql);
+
+        return sqlString(sql);
+    }
+
 	public <T extends Model> List<T> execute() {
 		if (mQueryBase instanceof Select) {
 			return SQLiteUtils.rawQuery(mType, toSql(), getArguments());
@@ -331,6 +346,13 @@ public final class From implements Sqlable {
      */
     public int count() {
         return SQLiteUtils.intQuery(toCountSql(), getArguments());
+    }
+    /**
+     * Gets sum of selected row
+     * @return
+     */
+    public double sum(String column) {
+        return SQLiteUtils.doubleQuery(toSumSql(column), getArguments());
     }
 
 	public String[] getArguments() {
